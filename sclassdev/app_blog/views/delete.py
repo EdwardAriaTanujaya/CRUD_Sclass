@@ -1,0 +1,12 @@
+from django.shortcuts import render, redirect
+from app_blog.utility import query
+
+def view(request, id):
+    if request.method == 'GET':
+        post = query("SELECT * FROM blog_post WHERE id = %s", [id])
+        print(post)
+        if not post:
+            return render(request, 'app_blog/notfound.html', status=404)
+        post = query("DELETE FROM blog_post WHERE id = %s", [id])
+
+    return redirect("/blog/list/", name="blog_list")
